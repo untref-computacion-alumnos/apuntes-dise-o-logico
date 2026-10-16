@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+  % Slice 1
+  \slicecfg{\scriptsize $w_2$ (borrow\\[-2pt]\scriptsize hacia bit 2)}{usado}{libre}{libre}{libre}
+  \slice{0,0}{a}{\scriptsize $r_0$}{\scriptsize $r_1$}{\scriptsize $r_2$}{usado}{usado}{usado}
+  \node[font=\small\bfseries, above=1mm of amarco.north] {Slice 1};
+  \node[etq, left=5mm of al1, align=right] {$a_0, b_0$};
+  \node[etq, left=5mm of al2, align=right] {$a_1, b_1,$\\$a_0, b_0$};
+  \node[etq, left=5mm of al3, align=right] {$a_2, b_2, a_1,$\\$b_1, a_0, b_0$};
+  \node[etq, left=5mm of al4, align=right] {$a_1, b_1,$\\$a_0, b_0$};
+  \node[right, font=\small] at (ao1) {$r_0$};
+  \node[right, font=\small] at (ao2) {$r_1$};
+  \node[right, font=\small] at (ao3) {$r_2$};
+  \node[right, font=\small] (w2out) at (ao4) {$w_2$};
+  % Slice 2
+  \slicecfg{}{libre}{libre}{libre}{libre}
+  \slice{10.5,0}{b}{\scriptsize $r_3$}{\scriptsize $b_{out}$}{}{usado}{usado}{libre}
+  \node[font=\small\bfseries, above=1mm of bmarco.north] {Slice 2};
+  \node[etq, left=5mm of bl1, align=right] {$a_3, b_3,$\\$a_2, b_2, w_2$};
+  \node[etq, left=5mm of bl2, align=right] {$a_3, b_3,$\\$a_2, b_2, w_2$};
+  \node[right, font=\small] at (bo1) {$r_3$};
+  \node[right, font=\small] at (bo2) {$b_{out}$ (préstamo final)};
+  \node[nota, anchor=north west] at ($(amarco.south west)+(0,-0.2)$) {En azul: LUT usadas. En gris: recursos libres (los MUX no se necesitan porque ninguna función supera 6 variables). La señal $w_2$ sale del slice 1 y entra al slice 2 por la red de interconexión de la FPGA.};
+\end{tikzpicture}

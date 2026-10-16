@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+  \foreach \g in {0,...,3}{
+    \pgfmathsetmacro{\y}{1.95-\g*1.3}
+    \node[bloque, fill=acentosuave, minimum width=24mm, minimum height=10mm, align=center] (h\g) at (2.5,\y) {\scriptsize Banco $8\times8$\\\scriptsize bits 15..8};
+    \node[bloque, fill=acentosuave, minimum width=24mm, minimum height=10mm, align=center] (l\g) at (5.3,\y) {\scriptsize Banco $8\times8$\\\scriptsize bits 7..0};
+    \begin{scope}[on background layer]\node[draw=gris, dashed, rounded corners=3pt, inner sep=3pt, fit=(h\g)(l\g)] (g\g) {};\end{scope}
+  }
+  \node[bloque, minimum width=16mm, minimum height=50mm, align=center] (dm) at (-1.3,0) {DMUX$_{4\_1}$};
+  \draw[<-] (dm.west) -- ++(-0.6,0) node[left] {$we$};
+  \draw[<-] (dm.south) -- ++(0,-0.5) node[below] {$w\_addr[4..3]$};
+  \foreach \g in {0,...,3}{\draw[->] (dm.east |- h\g) -- node[above, font=\tiny]{$we_\g$} ($(h\g.west)+(-0.9,0)$);}
+  \node[muxdemux, muxdemux def={Lh=5.0, Rh=2.5, w=1.3, NL=4, NB=1, NR=1}, fill=white] (m) at (9.0,0) {};
+  \foreach \g/\p in {0/1,1/2,2/3,3/4}{\draw[bus, ->] (g\g.east) -- ++(0.5,0) |- (m.lpin \p); \node[font=\tiny, above] at ($(g\g.east)+(0.3,0)$) {16 b};}
+  \node[font=\scriptsize, above] at (m.north) {MUX$_{4\_16}$};
+  \draw[<-] (m.bpin 1) -- ++(0,-0.5) node[below] {$r\_addr[4..3]$};
+  \draw[bus, ->] (m.rpin 1) -- ++(0.8,0) node[right] {$d\_out$ (16 b)};
+  \node[nota, anchor=north west, text width=13cm] at (-2.6,-3.4) {Cada fila es un "grupo" de 8 registros de 16 b: dos bancos de $8\times8$ uno al lado del otro (parte alta y parte baja). Las dos mitades de un grupo comparten $we_g$, $w\_addr[2..0]$ y $r\_addr[2..0]$, y su salida es de 16 b. $d\_in$ (16 b) va a todos: bits 15..8 a la columna izquierda, 7..0 a la derecha.};
+\end{tikzpicture}

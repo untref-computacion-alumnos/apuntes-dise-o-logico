@@ -1,0 +1,23 @@
+\begin{tikzpicture}[yscale=0.8]
+  \def\fl{5}
+  % reloj
+  \node[left] at (0,3.5) {clk};
+  \draw[line width=1pt] (0,3) -- (\fl,3) -- (\fl,4) -- (8,4) -- (8,3) -- (10,3);
+  % dato
+  \node[left] at (0,1.5) {$D$};
+  \draw[line width=1pt] (0,1) -- (2.6,1) -- (3,2) -- (6.6,2) -- (7,1) -- (10,1);
+  \fill[ok, opacity=0.15] (3.4,0.8) rectangle (6.3,2.2);
+  % salida
+  \node[left] at (0,-0.5) {$Q$};
+  \draw[line width=1pt] (0,-1) -- (6.4,-1) -- (6.8,0) -- (10,0);
+  % marcas
+  \draw[dashed, gris] (\fl,4.4) -- (\fl,-1.4);
+  \draw[dashed, gris] (3.4,2.4) -- (3.4,0.6);
+  \draw[dashed, gris] (6.3,2.4) -- (6.3,0.6);
+  \draw[dashed, gris] (6.6,0.2) -- (6.6,-1.4);
+  \draw[<->, acento] (3.4,2.55) -- node[above, font=\small]{$t_{setup}$} (\fl,2.55);
+  \draw[<->, acento] (\fl,2.55) -- node[above, font=\small]{$t_{hold}$} (6.3,2.55);
+  \draw[<->, critico] (\fl,-1.5) -- node[below, font=\small]{$t_{prop}$} (6.6,-1.5);
+  \node[font=\scriptsize, text=gris, above] at (\fl,4.4) {flanco activo};
+  \node[font=\scriptsize, text=ok] at (4.85,0.55) {$D$ estable};
+\end{tikzpicture}

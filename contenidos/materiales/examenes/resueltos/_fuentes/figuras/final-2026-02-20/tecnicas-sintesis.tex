@@ -1,0 +1,68 @@
+% Las cinco técnicas de síntesis aplicadas a f = x2'x1'x0 + x2'x1x0' + x2x1'x0 (minterms 1, 2, 5)
+\begin{tikzpicture}
+  % (a) AND-OR-INV
+  \begin{scope}
+    \node[font=\small\bfseries, anchor=west] at (-0.3,1.3) {(a) AND--OR--INV};
+    \draw (0,0) node[and port, number inputs=3] (a1) {};
+    \draw (0,-1.1) node[and port, number inputs=3] (a2) {};
+    \draw (0,-2.2) node[and port, number inputs=3] (a3) {};
+    \draw (1.6,-1.1) node[or port, number inputs=3] (o) {};
+    \draw (a1.out) -| (o.in 1); \draw (a2.out) -- (o.in 2); \draw (a3.out) -| (o.in 3);
+    \draw (o.out) -- ++(0.3,0) node[right] {$f$};
+    \node[left, font=\scriptsize] at ($(a1.in 2)+(-0.2,0)$) {$x_2',x_1',x_0$};
+    \node[left, font=\scriptsize] at ($(a2.in 2)+(-0.2,0)$) {$x_2',x_1,x_0'$};
+    \node[left, font=\scriptsize] at ($(a3.in 2)+(-0.2,0)$) {$x_2,x_1',x_0$};
+    \foreach \g in {a1,a2,a3}{\foreach \k in {1,2,3}{\draw (\g.in \k) -- ++(-0.15,0);}}
+  \end{scope}
+  % (b) MUX
+  \begin{scope}[xshift=6.3cm]
+    \node[font=\small\bfseries, anchor=west] at (-1.2,1.3) {(b) Multiplexor};
+    \node[muxdemux, muxdemux def={Lh=4.4, Rh=2.2, w=1.5, NL=8, NB=3, NR=1}, fill=white] (m) at (0,-0.9) {};
+    \foreach \k/\v in {1/0,2/1,3/1,4/0,5/0,6/1,7/0,8/0}{
+      \draw (m.lpin \k) -- ++(-0.35,0) node[left, font=\scriptsize] {\v};
+      \pgfmathtruncatemacro{\d}{\k-1}
+      \node[right, font=\tiny] at (m.lpin \k) {$d_{\d}$};
+    }
+    \draw (m.rpin 1) -- ++(0.35,0) node[right] {$f$};
+    \draw (m.bpin 1) -- ++(0,-0.3) node[below, font=\scriptsize] {$x_2$};
+    \draw (m.bpin 2) -- ++(0,-0.3) node[below, font=\scriptsize] {$x_1$};
+    \draw (m.bpin 3) -- ++(0,-0.3) node[below, font=\scriptsize] {$x_0$};
+  \end{scope}
+  % (c) PLA
+  \begin{scope}[xshift=10.2cm]
+    \node[font=\small\bfseries, anchor=west] at (-0.2,1.3) {(c) PLA};
+    \node[bloque, minimum width=20mm, minimum height=30mm] (and) at (0.9,-0.9) {plano\\AND\\\scriptsize (programable)};
+    \node[bloque, minimum width=14mm, minimum height=30mm] (or) at (3.2,-0.9) {plano\\OR\\\scriptsize (prog.)};
+    \foreach \k/\t in {1/{x_2'x_1'x_0},2/{x_2'x_1x_0'},3/{x_2x_1'x_0}}{
+      \draw[->] ($(and.north east)!{\k/4}!(and.south east)$) -- node[above, font=\tiny]{$\t$} ($(or.north west)!{\k/4}!(or.south west)$);
+    }
+    \foreach \k/\t in {1/x_2,2/x_1,3/x_0}{\draw[<-] ($(and.north west)!{\k/4}!(and.south west)$) -- ++(-0.35,0) node[left, font=\scriptsize]{$\t$};}
+    \draw[->] (or.east) -- ++(0.35,0) node[right]{$f$};
+  \end{scope}
+  % (d) ROM
+  \begin{scope}[yshift=-5.4cm]
+    \node[font=\small\bfseries, anchor=west] at (-0.3,1.0) {(d) ROM de 8 celdas de 1 b};
+    \node[bloque, minimum width=26mm, minimum height=34mm, anchor=north west] (rom) at (0.6,0.6) {};
+    \node[font=\scriptsize, anchor=north] at (rom.north) {ROM $8 \times 1$};
+    \foreach \k/\a/\v in {0/000/0,1/001/1,2/010/1,3/011/0,4/100/0,5/101/1,6/110/0,7/111/0}{
+      \node[font=\scriptsize, anchor=west] at ($(rom.north west)+(0.35,-0.62-0.33*\k)$) {\a\quad$\rightarrow$\quad\textbf{\v}};
+    }
+    \foreach \k/\t in {1/x_2,2/x_1,3/x_0}{\draw[<-] ($(rom.north west)!{\k/4}!(rom.south west)$) -- ++(-0.4,0) node[left, font=\scriptsize]{$\t$};}
+    \draw[->] (rom.east) -- ++(0.4,0) node[right]{$f$};
+  \end{scope}
+  % (e) ROM + MUX
+  \begin{scope}[xshift=6.6cm, yshift=-5.4cm]
+    \node[font=\small\bfseries, anchor=west] at (-0.6,1.0) {(e) ROM + MUX (idea de la LUT)};
+    \node[bloque, minimum width=30mm, minimum height=24mm, anchor=north west] (r2) at (0,0.6) {};
+    \node[font=\scriptsize, anchor=north] at (r2.north) {ROM $4 \times 2$};
+    \node[font=\scriptsize, anchor=west, align=left] at ($(r2.north west)+(0.2,-1.25)$) {$x_1x_0$ \quad $f|_{x_2=0}$\ \ $f|_{x_2=1}$\\00 \qquad\ 0 \qquad\ \ 0\\01 \qquad\ 1 \qquad\ \ 1\\10 \qquad\ 1 \qquad\ \ 0\\11 \qquad\ 0 \qquad\ \ 0};
+    \foreach \k/\t in {1/x_1,2/x_0}{\draw[<-] ($(r2.north west)!{\k/3}!(r2.south west)$) -- ++(-0.4,0) node[left, font=\scriptsize]{$\t$};}
+    \muxdos{mx}{$(r2.east)+(1.6,0)$}{}
+    \coordinate (i1) at ($(mx.north west)!0.28!(mx.south west)$);
+    \coordinate (i0) at ($(mx.north west)!0.72!(mx.south west)$);
+    \draw (r2.east |- i1) -- node[above, font=\tiny]{$f|_{x_2=1}$} (i1);
+    \draw (r2.east |- i0) -- node[below, font=\tiny]{$f|_{x_2=0}$} (i0);
+    \draw (mx.north) -- ++(0,0.4) node[above, font=\scriptsize]{$x_2$};
+    \draw[->] (mx.east) -- ++(0.4,0) node[right]{$f$};
+  \end{scope}
+\end{tikzpicture}

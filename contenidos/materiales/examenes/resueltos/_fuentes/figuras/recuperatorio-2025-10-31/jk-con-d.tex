@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+  \node[flipflop D] (ff) at (6,0) {};
+  \draw (2.6,0.9) node[and port] (a1) {};
+  \draw (2.6,-0.9) node[and port] (a2) {};
+  \draw (4.3,0) node[or port] (o) {};
+  \draw (a1.out) -| (o.in 1);
+  \draw (a2.out) -| (o.in 2);
+  \draw (o.out) -- (ff.pin 1);
+  \draw (a1.in 1) -- ++(-1.6,0) node[left] {$J$};
+  \draw (a2.in 2) -- ++(-0.6,0) node[not port, scale=0.6, anchor=out] (inv) {};
+  \draw (inv.in) -- ++(-0.7,0) node[left] {$K$};
+  \draw (ff.pin 3) -- ++(-0.35,0) -- ++(0,-1.6) node[below] {clk};
+  % salidas y realimentación
+  \draw (ff.pin 6) -- ++(1.4,0) coordinate (q) node[right] {$Q$};
+  \draw (ff.pin 4) -- ++(0.8,0) coordinate (qn) -- ++(0.6,0) node[right] {$Q'$};
+  \fill ($(ff.pin 6)+(1.0,0)$) circle (1.3pt) (qn) circle (1.3pt);
+  \draw[acento, line width=1pt] ($(ff.pin 6)+(1.0,0)$) -- ++(0,-2.6) -| ($(a2.in 1)+(-0.4,0)$) -- (a2.in 1);
+  \draw[acento, line width=1pt] (qn) -- ++(0,2.9) -| ($(a1.in 2)+(-0.4,0)$) -- (a1.in 2);
+  \node[nota, anchor=west] at (1.2,-3.0) {$D = J\,Q' + K'\,Q$};
+\end{tikzpicture}

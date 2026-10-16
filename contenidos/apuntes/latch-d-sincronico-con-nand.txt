@@ -1,0 +1,22 @@
+# Tabla de verdad
+# Generado a partir de un circuito main
+# Exportado en Fri Sep 25 19:58:29 GMT-03:00 2026
+
+# Consejos y notas sobre el formato:
+# * Puede editar este archivo y luego importarlo de nuevo a Logisim!
+# * Cualquier cosa después de un “#” es un comentario y será ignorado.
+# * Las líneas en blanco y las líneas de separación (por ejemplo, ~~~~~~~) se ignoran.
+%a * Mantener nombres de columnas simples (sin espacios, puntuación, etc.)
+# * “Nombre[N..0]” indica una variable de 1 bit N, mientras que
+# “Nombre” por sí mismo indica una variable de 1 bit.
+Puedes usar “x” o “-” para indicar «no me importa» para ambos.
+# bits de entrada y salida.
+Puede utilizar la notación binaria (por ejemplo,“10100011xxxxxx”) o
+y o hexadecimal (por ejemplo, “C3x”). Logisim averiguará cuál es cuál.
+
+D E | Q Qn
+~~~~~~~~~~
+0 0 | ? ? 
+0 1 | 0 1 
+1 0 | ? ? 
+1 1 | 1 0 

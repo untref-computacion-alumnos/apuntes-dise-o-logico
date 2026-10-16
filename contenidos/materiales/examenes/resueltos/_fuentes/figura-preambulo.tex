@@ -1,0 +1,116 @@
+% Preámbulo común a todas las figuras de los exámenes resueltos.
+% Cada figura en _fuentes/figuras/<examen>/<nombre>.tex contiene solo el
+% cuerpo (uno o más entornos tikzpicture / circuitikz); build.py lo envuelve
+% con este preámbulo y lo compila con LuaLaTeX.
+\documentclass[border=6pt,varwidth=40cm]{standalone}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{Libertinus Sans}
+\setmathfont{Libertinus Math}
+\usepackage{xcolor}
+\usepackage[siunitx]{circuitikz}
+\usepackage{karnaugh-map}
+\usepackage{tikz-timing}
+\usepackage{array}
+\usetikzlibrary{positioning,calc,arrows.meta,fit,backgrounds,shapes.geometric,
+  decorations.pathreplacing,matrix}
+
+% Paleta (la misma en todas las figuras)
+\definecolor{tinta}{HTML}{1F2933}
+\definecolor{acento}{HTML}{1E5AA8}
+\definecolor{acentosuave}{HTML}{DCE8F7}
+\definecolor{critico}{HTML}{C2410C}
+\definecolor{criticosuave}{HTML}{FDE7DA}
+\definecolor{ok}{HTML}{15803D}
+\definecolor{oksuave}{HTML}{DCF2E3}
+\definecolor{gris}{HTML}{9AA5B1}
+\definecolor{grissuave}{HTML}{F1F3F5}
+
+\ctikzset{logic ports=ieee, logic ports/scale=0.8, flipflops/scale=0.75}
+\tikzset{
+  >={Stealth[length=5pt]},
+  every picture/.style={line width=0.7pt, draw=tinta, text=tinta},
+  bloque/.style={draw, rounded corners=1.5pt, fill=white, minimum height=9mm,
+    minimum width=16mm, align=center, font=\small},
+  usado/.style={fill=acentosuave, draw=acento, line width=1pt},
+  libre/.style={fill=grissuave, draw=gris, text=gris},
+  rcritico/.style={draw=critico, line width=1.8pt},
+  bus/.style={line width=1.6pt},
+  nota/.style={font=\footnotesize\itshape, text=acento, align=left},
+  etq/.style={font=\footnotesize},
+}
+
+% Multiplexor 2 a 1 dibujado como trapecio. #1 = nombre, #2 = posición,
+% #3 = estilo extra (usado / libre).
+\newcommand{\muxdos}[3]{%
+  \node[draw, trapezium, shape border rotate=270, trapezium stretches body,
+    minimum width=10mm, minimum height=5mm, trapezium angle=70,
+    fill=white, #3, font=\scriptsize] (#1) at (#2) {};
+  \node[font=\tiny, anchor=west] at ($(#1.north west)!0.28!(#1.south west)+(0.5mm,0)$) {1};
+  \node[font=\tiny, anchor=west] at ($(#1.north west)!0.72!(#1.south west)+(0.5mm,0)$) {0};
+}
+
+% ---------------------------------------------------------------------------
+% Slice simplificado de FPGA (Xilinx) tal como se ve en la presentación
+% "Síntesis lógica": 4 LUT-6, dos MUX 2:1 (F7) y un MUX 2:1 (F8).
+%
+% \slicecfg{L4}{estilo L4}{estilo F7a}{estilo F7b}{estilo F8}
+% \slice{x,y}{prefijo}{L1}{L2}{L3}{estilo L1}{estilo L2}{estilo L3}
+% Los textos L1..L4 se escriben dentro de cada LUT. Los estilos son "usado"
+% o "libre" (TeX admite 9 argumentos, por eso la LUT 4 y los MUX van aparte). Crea nodos <prefijo>l1..l4, <prefijo>fa, <prefijo>fb, <prefijo>f8
+% y las coordenadas <prefijo>o1..o4 (salida directa de cada LUT), <prefijo>oa,
+% <prefijo>ob (salidas de los MUX F7), <prefijo>o8 (salida del MUX F8),
+% <prefijo>sa, <prefijo>sb, <prefijo>s8 (entrada de selección de cada MUX).
+% ---------------------------------------------------------------------------
+\newcommand{\slice}[8]{%
+  \begin{scope}[shift={(#1)}]
+    \foreach \i/\yy in {1/0,2/-2.1,3/-4.4,4/-6.5}{
+      \coordinate (#2c\i) at (0,\yy);
+    }
+    \node[bloque, minimum width=22mm, minimum height=15mm, #6] (#2l1) at (#2c1) {LUT-6\\[1pt]#3};
+    \node[bloque, minimum width=22mm, minimum height=15mm, #7] (#2l2) at (#2c2) {LUT-6\\[1pt]#4};
+    \node[bloque, minimum width=22mm, minimum height=15mm, #8] (#2l3) at (#2c3) {LUT-6\\[1pt]#5};
+    \sliceresto{#2}
+  \end{scope}
+}
+% Segunda mitad (TeX solo admite 9 argumentos): LUT 4 y multiplexores.
+% Se configura antes con \slicecfg{L4}{estilo L4}{F7a}{F7b}{F8}.
+\newcommand{\slicecfg}[5]{%
+  \def\slLcuatro{#1}\def\slEcuatro{#2}\def\slFa{#3}\def\slFb{#4}\def\slFocho{#5}}
+\slicecfg{}{}{}{}{}
+\newcommand{\sliceresto}[1]{%
+  \node[bloque, minimum width=22mm, minimum height=15mm, \slEcuatro] (#1l4) at (#1c4) {LUT-6\\[1pt]\slLcuatro};
+  % entradas de cada LUT (6 líneas)
+  \foreach \l in {l1,l2,l3,l4}{
+    \foreach \k in {1,...,6}{
+      \draw[gris, line width=0.5pt] ($(#1\l.north west)!{(\k-0.5)/6}!(#1\l.south west)$) -- ++(-0.45,0);
+    }
+  }
+  % salidas directas
+  \foreach \l/\o in {l1/o1,l2/o2,l3/o3,l4/o4}{
+    \draw (#1\l.east) -- ++(5.0,0) coordinate (#1\o);
+    \coordinate (#1\o b) at ($(#1\l.east)+(4.6,0)$);
+  }
+  % MUX F7 (pares) y F8
+  \muxdos{#1fa}{$(#1l1.east)!0.5!(#1l2.east)+(1.5,0)$}{\slFa}
+  \muxdos{#1fb}{$(#1l3.east)!0.5!(#1l4.east)+(1.5,0)$}{\slFb}
+  \muxdos{#1f8}{$(#1fa.east)!0.5!(#1fb.east)+(1.4,0)$}{\slFocho}
+  \draw ($(#1l1.east)+(0.6,0)$) |- ($(#1fa.north west)!0.28!(#1fa.south west)$);
+  \draw ($(#1l2.east)+(0.6,0)$) |- ($(#1fa.north west)!0.72!(#1fa.south west)$);
+  \draw ($(#1l3.east)+(0.6,0)$) |- ($(#1fb.north west)!0.28!(#1fb.south west)$);
+  \draw ($(#1l4.east)+(0.6,0)$) |- ($(#1fb.north west)!0.72!(#1fb.south west)$);
+  \fill ($(#1l1.east)+(0.6,0)$) circle (1.2pt) ($(#1l2.east)+(0.6,0)$) circle (1.2pt)
+        ($(#1l3.east)+(0.6,0)$) circle (1.2pt) ($(#1l4.east)+(0.6,0)$) circle (1.2pt);
+  \draw (#1fa.east) -- ++(0.25,0) |- ($(#1f8.north west)!0.28!(#1f8.south west)$);
+  \draw (#1fb.east) -- ++(0.25,0) |- ($(#1f8.north west)!0.72!(#1f8.south west)$);
+  \draw (#1f8.east) -- (#1f8.east -| #1o1) coordinate (#1o8);
+  \draw (#1fa.east) -- (#1fa.east -| #1o1) coordinate (#1oa);
+  \draw (#1fb.east) -- (#1fb.east -| #1o1) coordinate (#1ob);
+  \draw (#1fa.north) -- ++(0,0.35) coordinate (#1sa);
+  \draw (#1fb.north) -- ++(0,0.35) coordinate (#1sb);
+  \draw (#1f8.north) -- ++(0,0.35) coordinate (#1s8);
+  \begin{scope}[on background layer]
+    \node[draw=gris, dashed, rounded corners=4pt, inner sep=7pt,
+      fit=(#1l1)(#1l4)(#1f8)(#1o1b)(#1sa)] (#1marco) {};
+  \end{scope}
+}

@@ -1,0 +1,22 @@
+\begin{tikzpicture}
+  \foreach \i in {0,...,5}{
+    \node[flipflop D, add async SR] (ff\i) at (\i*3.4,0) {};
+    \node[anchor=south east, font=\small] at ($(ff\i.north west)+(0.45,0.05)$) {FF$_{\i}$};
+    % set asincrónico: a nivel inactivo (1, activo en bajo), nunca se usa
+    \draw (ff\i.up) -- ++(0,0.35) node[above, font=\scriptsize] {$1$};
+    % D = Q' (conmuta en cada flanco)
+    \draw (ff\i.pin 4) -- ++(0.35,0) coordinate (n\i) -- ++(0,-1.25) -| ($(ff\i.pin 1)+(-0.35,0)$) -- (ff\i.pin 1);
+    \fill (n\i) circle (1.3pt);
+    \draw (ff\i.pin 6) -- ++(0.35,0) -- ++(0,1.1) node[above, font=\small] {$Q_{\i}$};
+    % reset asincrónico
+    \draw (ff\i.down) -- ++(0,-1.75) coordinate (r\i);
+  }
+  \draw (ff0.pin 3) -- ++(-0.6,0) node[left] {clk};
+  \foreach \i [evaluate=\i as \j using int(\i+1)] in {0,...,4}{
+    \draw[acento, line width=1pt] (n\i) -- ++(0.45,0) |- (ff\j.pin 3);
+  }
+  \draw (r0) -- (r5);
+  \draw (r0) -- ++(-0.9,0) node[left] {$rst'$ (activo en bajo)};
+  \foreach \i in {0,...,5}{\fill (r\i) circle (1.3pt);}
+  \node[nota, anchor=north west, text width=16cm] at ($(r0)+(-1.6,-0.35)$) {La entrada de set asincrónico de cada flip-flop se deja a nivel inactivo (1, activo en bajo) porque no se usa. Cada flip-flop D tiene $D = Q'$, así que conmuta en cada flanco ascendente de su reloj. El reloj de FF$_{i+1}$ es $Q_i'$ (en azul): $Q_i'$ sube justo cuando $Q_i$ baja de 1 a 0, que es cuando el bit siguiente tiene que cambiar.};
+\end{tikzpicture}

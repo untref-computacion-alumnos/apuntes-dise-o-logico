@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+  \node[muxdemux, muxdemux def={Lh=6.4, Rh=3.0, w=1.6, NL=4, NB=2, NR=1}, fill=white] (m) at (0,0) {};
+  \foreach \k/\c in {1/00,2/01,3/10,4/11}{\node[font=\tiny, right] at (m.lpin \k) {\c};}
+  \draw (m.bpin 1) -- ++(0,-0.3); \draw (m.bpin 2) -- ++(0,-0.3);
+  \node[below=3mm of m.south, font=\small] {$ctrl$};
+  \node[bloque, minimum height=7mm] (dec) at (m.lpin 2 -| -3.0,0) {$-1$};
+  \node[bloque, minimum height=7mm] (inc) at (m.lpin 3 -| -3.0,0) {$+1$};
+  \draw[bus, ->] (dec.east) -- (m.lpin 2);
+  \draw[bus, ->] (inc.east) -- (m.lpin 3);
+  \draw[bus, ->] (m.lpin 4 -| -5.2,0) node[left] {$din$} -- (m.lpin 4);
+  \node[bloque, minimum width=26mm, minimum height=22mm, fill=grissuave, align=center] (reg) at (3.8,0) {Registro de 4 b\\\scriptsize 4 flip-flops JK\\\scriptsize $J_i = N_i$, $K_i = N_i'$};
+  \draw[bus, ->] (m.rpin 1) -- node[above, font=\small]{$N$} (reg.west);
+  \draw[->] (reg.south) ++(0,-0.7) node[below] {clk} -- (reg.south);
+  \draw[bus] (reg.east) -- ++(0.9,0) coordinate (q) node[right] {$Q$ (PC)};
+  \fill (q) circle (1.6pt);
+  \coordinate (top) at (0,3.6);
+  \draw[bus, acento] (q) |- (top -| -4.5,0) coordinate (tl);
+  \draw[bus, acento, ->] (tl) |- (dec.west);
+  \draw[bus, acento, ->] (tl |- dec.west) |- (inc.west);
+  \fill[acento] (tl |- dec.west) circle (1.6pt);
+  \draw[bus, acento, ->] (top -| -1.3,0) |- (m.lpin 1);
+  \fill[acento] (top -| -1.3,0) circle (1.6pt);
+  \node[font=\scriptsize, text=acento, above] at ($(m.lpin 1)+(-0.75,0)$) {$Q$};
+\end{tikzpicture}

@@ -1,0 +1,26 @@
+\begin{tikzpicture}
+  % nivel de entrada (habilitación)
+  \draw (0,1.2) node[nand port, number inputs=3] (n1) {};
+  \draw (0,-1.2) node[nand port, number inputs=2] (n2) {};
+  % latch cruzado
+  \draw (3.2,1.0) node[nand port, number inputs=2] (q) {};
+  \draw (3.2,-1.0) node[nand port, number inputs=3] (qn) {};
+  \draw (n1.out) -- node[above, font=\scriptsize]{$S^*$} (q.in 1);
+  \draw (n2.out) -- node[below, font=\scriptsize]{$R^*$} ($(n2.out)+(0.8,0)$) |- (qn.in 3);
+  \draw (q.out) -- ++(1.6,0) node[right] {$Q$};
+  \draw (qn.out) -- ++(1.6,0) node[right] {$Q'$};
+  % realimentación cruzada
+  \draw[acento, line width=1pt] ($(q.out)+(0.5,0)$) -- ++(0,-0.75) -- ($(qn.in 1)+(-0.5,0.55)$) |- (qn.in 1);
+  \draw[acento, line width=1pt] ($(qn.out)+(0.9,0)$) -- ++(0,0.75) -- ($(q.in 2)+(-0.3,-0.55)$) |- (q.in 2);
+  \fill ($(q.out)+(0.5,0)$) circle (1.3pt) ($(qn.out)+(0.9,0)$) circle (1.3pt);
+  % entradas
+  \draw (n1.in 1) -- ++(-1.2,0) node[left] {$S$};
+  \draw (n2.in 2) -- ++(-1.2,0) node[left] {$R$};
+  \draw (n1.in 2) -- ++(-0.7,0) coordinate (e1) -- (e1 |- n2.in 1) -- (n2.in 1);
+  \draw (e1) -- ++(-0.5,0) node[left] {$E$};
+  \fill (e1) circle (1.3pt);
+  \draw[critico, line width=1pt] (n1.in 3) -- ++(-0.4,0) coordinate (c1) -- (c1 |- 0,-2.4) coordinate (c2) -| ($(qn.in 2)+(-0.7,0)$) -- (qn.in 2);
+  \draw[critico, line width=1pt] (c2) -- ++(-0.8,0) node[left, text=critico] {$clr'$};
+  \fill[critico] (c2) circle (1.3pt);
+  \node[nota, anchor=north west, text width=10cm] at (-1.9,-2.8) {$clr' = 0$ fuerza $S^* = 1$ y $Q' = 1$, por lo tanto $Q = 0$, sin importar $E$ (reset asincrónico). Con $clr' = 1$ es el latch SR habilitado común.};
+\end{tikzpicture}

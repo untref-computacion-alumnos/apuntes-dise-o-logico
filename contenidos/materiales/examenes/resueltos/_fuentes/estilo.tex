@@ -1,0 +1,63 @@
+% Estilo de los PDF de exámenes resueltos (se incluye en el preámbulo de pandoc).
+\usepackage{babel}
+\babelprovide[import, main, hyphenrules=nohyphenation]{spanish}
+\usepackage{fontspec}
+\setmainfont{Libertinus Serif}
+\setsansfont{Libertinus Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.82]
+\usepackage{unicode-math}
+\setmathfont{Libertinus Math}
+\usepackage{xcolor}
+\definecolor{tinta}{HTML}{1F2933}
+\definecolor{acento}{HTML}{1E5AA8}
+\definecolor{acentosuave}{HTML}{EEF4FB}
+\definecolor{critico}{HTML}{C2410C}
+\definecolor{criticosuave}{HTML}{FDF0E8}
+\definecolor{ok}{HTML}{15803D}
+\definecolor{oksuave}{HTML}{EAF6EE}
+\definecolor{gris}{HTML}{6B7785}
+\definecolor{grissuave}{HTML}{F4F5F7}
+\color{tinta}
+
+\usepackage{titlesec}
+\titleformat{\section}{\sffamily\Large\bfseries\color{acento}}{}{0pt}{}[\vspace{2pt}{\color{acento}\titlerule[0.8pt]}]
+\titleformat{\subsection}{\sffamily\large\bfseries}{}{0pt}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{gris}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt}{4pt}
+
+\usepackage[most]{tcolorbox}
+\tcbset{base/.style={breakable, enhanced, boxrule=0pt, arc=2pt, left=9pt, right=8pt,
+  top=6pt, bottom=6pt, before skip=8pt, after skip=8pt, borderline west={3pt}{0pt}{#1}}}
+\newtcolorbox{cajaenunciado}{base=gris, colback=grissuave}
+\newtcolorbox{cajaidea}{base=acento, colback=acentosuave}
+\newtcolorbox{cajafuente}{base=ok, colback=oksuave}
+\newtcolorbox{cajaojo}{base=critico, colback=criticosuave}
+\newtcolorbox{cajasupuesto}{base=critico, colback=criticosuave}
+\newtcolorbox{cajarespuesta}{base=acento, colback=acentosuave}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\small\color{gris}Diseño Lógico · Exámenes resueltos}
+\fancyhead[R]{\sffamily\small\color{gris}\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\usepackage{float}
+\floatplacement{figure}{H}
+\usepackage[font=small, labelfont={bf,color=gris}, textfont={color=gris}]{caption}
+\setlength{\emergencystretch}{3em}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begingroup\sffamily
+  {\small\color{gris}UNTREF · Ingeniería en Computación · Diseño Lógico\par}
+  \vspace{4pt}
+  {\LARGE\bfseries\color{acento}\@title\par}
+  \vspace{6pt}{\color{acento}\rule{\linewidth}{1.2pt}}\par
+  \endgroup\vspace{6pt}}
+\makeatother
+\renewcommand{\contentsname}{Contenido}

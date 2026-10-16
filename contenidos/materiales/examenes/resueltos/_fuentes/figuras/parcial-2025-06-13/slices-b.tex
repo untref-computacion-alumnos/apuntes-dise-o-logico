@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+  \slicecfg{\scriptsize $h|_{00}$}{usado}{usado}{usado}{usado}
+  \slice{0,0}{a}{\scriptsize $h|_{11}$}{\scriptsize $h|_{10}$}{\scriptsize $h|_{01}$}{usado}{usado}{usado}
+  \node[font=\small\bfseries, above=1mm of amarco.north] {Slice 1: función de 8 variables};
+  \foreach \l in {1,2,3,4}{\node[etq, left=5mm of al\l] {$x_5..x_0$};}
+  \node[above, font=\small] at (asa) {$x_6$};
+  \node[above, font=\small] at (asb) {$x_6$};
+  \node[above, font=\small] at (as8) {$x_7$};
+  \node[right, font=\small] at (ao8) {$h$};
+  \slicecfg{}{libre}{libre}{libre}{libre}
+  \slice{10.5,0}{b}{\scriptsize $f_1$}{\scriptsize $f_2$}{}{usado}{usado}{libre}
+  \node[font=\small\bfseries, above=1mm of bmarco.north] {Slice 2: dos funciones de 3 variables};
+  \node[etq, left=5mm of bl1] {$y_2, y_1, y_0$};
+  \node[etq, left=5mm of bl2] {$z_2, z_1, z_0$};
+  \node[right, font=\small] at (bo1) {$f_1$};
+  \node[right, font=\small] at (bo2) {$f_2$};
+\end{tikzpicture}

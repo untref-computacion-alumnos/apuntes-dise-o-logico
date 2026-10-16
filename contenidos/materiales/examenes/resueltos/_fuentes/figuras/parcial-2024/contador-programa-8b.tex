@@ -1,0 +1,14 @@
+\begin{tikzpicture}
+  \muxdos{m}{0,0}{}
+  \draw (m.north) -- ++(0,0.5) node[above] {$J$ (jump)};
+  \node[bloque, minimum height=8mm] (inc) at (-2.6,-1.0) {$+1$\\\scriptsize ADD 8 b};
+  \draw[bus, ->] (inc.east) -- ++(0.8,0) |- ($(m.north west)!0.72!(m.south west)$);
+  \draw[bus, ->] ($(m.north west)!0.28!(m.south west)$) ++(-3.8,0) node[left] {$D$} -- ($(m.north west)!0.28!(m.south west)$);
+  \node[bloque, minimum width=26mm, minimum height=20mm, fill=grissuave, align=center] (reg) at (3.6,0) {PC: registro 8 b\\\scriptsize 8 flip-flops JK\\\scriptsize $J^{ff}_i = N_i$, $K^{ff}_i = N_i'$};
+  \draw[bus, ->] (m.east) -- node[above, font=\small]{$N$} (reg.west);
+  \draw[->] (reg.north) ++(0,0.7) node[above] {clk} -- (reg.north);
+  \draw[bus] (reg.east) -- ++(0.9,0) coordinate (q) node[right] {$PC$};
+  \fill (q) circle (1.6pt);
+  \draw[bus, acento, ->] (q) |- ++(0,-2.2) -| ($(inc.west)+(-0.6,0)$) -- (inc.west);
+  \node[font=\tiny, anchor=west] at ($(m.north west)!0.28!(m.south west)+(0.3,0)$) {};
+\end{tikzpicture}

@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+  \draw (0,1.6) node[xor port] (x1) {};
+  \draw (2.6,0.3) node[xor port] (x2) {};
+  \draw (0,-1.7) node[and port] (a1) {};
+  \draw (2.6,-0.9) node[and port] (a2) {};
+  \draw (4.6,-1.3) node[or port] (o) {};
+  \draw (x1.in 1) -- ++(-1.2,0) node[left] {$a_i$} coordinate (A);
+  \draw (x1.in 2) -- ++(-0.8,0) coordinate (B0) -- ++(-0.4,0) node[left] {$b_i$};
+  \draw ($(x1.in 1)+(-1.0,0)$) |- (a1.in 1);
+  \draw (B0) |- (a1.in 2);
+  \fill ($(x1.in 1)+(-1.0,0)$) circle (1.3pt) (B0) circle (1.3pt);
+  \draw (x1.out) -- ++(0.4,0) coordinate (p) |- (x2.in 1);
+  \draw (p) |- (a2.in 1); \fill (p) circle (1.3pt);
+  \node[above, font=\scriptsize] at ($(x1.out)+(0.2,0)$) {$p_i$};
+  \draw (x2.in 2) -- ++(-0.5,0) coordinate (c) -- ++(-3.6,0) node[left] {$c_i$};
+  \draw (c) |- (a2.in 2); \fill (c) circle (1.3pt);
+  \draw (x2.out) -- ++(2.4,0) node[right] {$s_i$};
+  \draw (a2.out) -| (o.in 1);
+  \draw (a1.out) -- ++(3.0,0) |- (o.in 2);
+  \node[above, font=\scriptsize] at ($(a1.out)+(0.3,0)$) {$g_i$};
+  \draw (o.out) -- ++(0.4,0) node[right] {$c_{i+1}$};
+  \node[nota, anchor=west] at (-1.5,-2.8) {$s_i = p_i \oplus c_i$,\quad $c_{i+1} = g_i + p_i\,c_i$,\quad con $p_i = a_i \oplus b_i$, $g_i = a_i b_i$};
+\end{tikzpicture}

@@ -1,0 +1,40 @@
+\begin{tikzpicture}
+  \tikzset{t/.style={font=\scriptsize\bfseries, text=critico}, tg/.style={font=\scriptsize, text=gris}}
+  % ---------------- Búsqueda (fetch) ----------------
+  \node[font=\small\bfseries, anchor=west] at (-1,5.6) {Búsqueda de instrucción};
+  \node[bloque, fill=grissuave] (pc) at (0,4.2) {PC\\\scriptsize contador};
+  \node[bloque] (ram) at (3.4,4.2) {RAM de\\programa\\\scriptsize 12 ns};
+  \node[bloque, fill=grissuave] (ir2) at (6.8,4.2) {IR\\\scriptsize setup};
+  \node[bloque] (add) at (3.4,2.6) {ADD 8 b ($+1$)\\\scriptsize 5 ns};
+  \draw[->] (pc) -- (ram); \draw[->] (ram) -- (ir2);
+  \draw[->] (pc.south) |- (add.west);
+  \draw[->] (add.east) -- ++(0.5,0) |- ($(pc.north)+(0,0.45)$) -- (pc.north);
+  \node[tg, below=1mm of ir2] {$0{,}75+12+0{,}25 = 13$ ns};
+  \node[tg, below=1mm of add] {$0{,}75+5+0{,}25 = 6$ ns};
+  % ---------------- Ejecución ----------------
+  \node[font=\small\bfseries, anchor=west] at (-1,1.2) {Ejecución (ej.: \texttt{add rs})};
+  \node[bloque, fill=grissuave] (ir) at (0,-0.6) {IR\\\scriptsize flip-flops};
+  \node[bloque] (du) at (3.4,0.3) {Unidad de control\\\scriptsize 7 ns};
+  \node[bloque] (rd) at (3.4,-1.5) {Registers: lectura\\\scriptsize MUX$_{16\_8}$: $4\times1{,}5=6$ ns};
+  \node[bloque] (buf) at (6.6,-0.6) {Buffer\\triestado\\\scriptsize 1 ns};
+  \node[bloque] (alu) at (8.9,-0.6) {ALU\\\scriptsize 6 ns};
+  \node[bloque] (wm) at (11.5,-0.6) {Habilitación (we)\\\scriptsize MUX$_{2\_8}$: 1,5 ns};
+  \node[bloque, fill=grissuave] (rg) at (14.3,-0.6) {Reg\_A\\\scriptsize setup 0,25 ns};
+  \draw[->, rcritico] (ir.east) -- ++(0.5,0) |- (du.west);
+  \draw[->] (ir.east) -- ++(0.5,0) |- (rd.west);
+  \draw[->, rcritico] (du.east) -| (buf.north);
+  \draw[->] (rd.east) -| (buf.south);
+  \draw[->, rcritico] (buf) -- node[above, etq]{BUS} (alu);
+  \draw[->, rcritico] (alu) -- node[above, etq]{BUS} (wm);
+  \draw[->, rcritico] (wm) -- (rg);
+  \draw[->, dashed] (rg.south east) -- ++(0,-0.9) -| node[pos=0.25, below, etq]{Reg\_A $\to$ B (realimentación)} (alu.south east);
+  \draw[->] ($(du.north)+(0.6,0)$) -- ++(0,0.35) -| node[pos=0.25, above, etq]{alu\_op} (alu.north);
+  \node[t, below=1mm of ir] {0,75};
+  \node[t, above right=0mm and 0mm of du.north east] {7,75};
+  \node[tg, below=1mm of rd] {6,75};
+  \node[t, above right=0mm and 0mm of buf.north east] {8,75};
+  \node[t, below=1mm of alu] {14,75};
+  \node[t, below=1mm of wm] {16,25};
+  \node[t, below=1mm of rg] {16,5 ns};
+  \node[nota, anchor=north west, text width=15.5cm] at (-1,-3.4) {Camino crítico (naranja): $T_{prop} + T_{DU} + T_{buffer} + T_{ALU} + T_{MUX_{2\_8}} + T_{setup} = 0{,}75+7+1+6+1{,}5+0{,}25 = 16{,}5$ ns. El dato de Registers llega antes (6,75 ns) que la habilitación del buffer (7,75 ns): manda la DU. Los números son instantes acumulados desde el flanco de reloj.};
+\end{tikzpicture}

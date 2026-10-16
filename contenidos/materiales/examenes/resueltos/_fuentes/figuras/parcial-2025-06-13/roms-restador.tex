@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+  \foreach \i/\x in {0/6,1/0}{
+    \node[bloque, minimum width=22mm, minimum height=24mm] (r\i) at (\x,0) {};
+    \node[font=\small\bfseries, anchor=north] at (r\i.north) {ROM$_{\i}$};
+    \node[font=\scriptsize, anchor=south] at (r\i.south) {$8\times4$};
+    \foreach \k/\t in {1/A_2,2/A_1,3/A_0}{
+      \coordinate (i\i\k) at ($(r\i.north west)!{\k/4}!(r\i.south west)$);
+      \node[right, font=\scriptsize] at (i\i\k) {$\t$};
+    }
+    \coordinate (o\i a) at ($(r\i.north east)!0.3!(r\i.south east)$);
+    \coordinate (o\i b) at ($(r\i.north east)!0.7!(r\i.south east)$);
+    \node[left, font=\scriptsize] at (o\i a) {$D_0$};
+    \node[left, font=\scriptsize] at (o\i b) {$D_1$};
+  }
+  \draw (i01) -- ++(-0.6,0) node[left] {$a_0$};
+  \draw (i02) -- ++(-0.6,0) node[left] {$b_0$};
+  \draw (i03) -- ++(-0.6,0) node[left] {0};
+  \draw (o0a) -- ++(0.7,0) node[right] {$r_0$};
+  \draw (i11) -- ++(-0.6,0) node[left] {$a_1$};
+  \draw (i12) -- ++(-0.6,0) node[left] {$b_1$};
+  \draw (o1a) -- ++(0.7,0) node[right] {$r_1$};
+  \draw (o1b) -- ++(0.7,0) node[right] {$r_2$ (borrow)};
+  \draw[acento, line width=1pt] (o0b) -- ++(0.4,0) -- ++(0,-1.3) -| ($(i13)+(-1.0,0)$) -- (i13);
+  \node[font=\small, text=acento] at ($(o0b)+(0.75,-0.9)$) {$w_1$};
+\end{tikzpicture}

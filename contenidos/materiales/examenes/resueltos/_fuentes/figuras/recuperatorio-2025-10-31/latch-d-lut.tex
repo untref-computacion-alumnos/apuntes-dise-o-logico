@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+  \node[bloque, usado, minimum width=26mm, minimum height=30mm] (lut) at (0,0) {};
+  \node[font=\small\bfseries, anchor=north] at (lut.north) {LUT-6};
+  \node[font=\scriptsize, anchor=south, align=center] at (lut.south) {$Q^+ = clr'\,(E\,D + E'\,Q)$};
+  \foreach \k/\t/\n in {1/I_5/{0},2/I_4/{0},3/I_3/{clr},4/I_2/E,5/I_1/D,6/I_0/{}}{
+    \coordinate (p\k) at ($(lut.north west)!{(\k-0.5)/6}!(lut.south west)$);
+    \node[right, font=\scriptsize] at (p\k) {$\t$};
+  }
+  \draw (p1) -- ++(-0.8,0) node[left, font=\small] {0};
+  \draw (p2) -- ++(-0.8,0) node[left, font=\small] {0};
+  \draw (p3) -- ++(-0.8,0) node[left, font=\small] {$clr$};
+  \draw (p4) -- ++(-0.8,0) node[left, font=\small] {$E$};
+  \draw (p5) -- ++(-0.8,0) node[left, font=\small] {$D$};
+  \draw (lut.east) -- ++(1.5,0) node[right] {$Q$};
+  \fill ($(lut.east)+(0.8,0)$) circle (1.3pt);
+  \draw[acento, line width=1pt] ($(lut.east)+(0.8,0)$) -- ++(0,-2.1) -| ($(p6)+(-0.5,0)$) -- (p6);
+  \node[nota, anchor=west] at (2.2,-1.3) {realimentación: la salida\\vuelve a entrar como $I_0$};
+\end{tikzpicture}

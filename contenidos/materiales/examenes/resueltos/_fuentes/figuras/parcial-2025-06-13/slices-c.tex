@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+  \slicecfg{\scriptsize MUX$_{4\_1}$\\[-2pt]\scriptsize $d_3..d_0$ bit 1}{usado}{usado}{usado}{libre}
+  \slice{0,0}{a}{\scriptsize MUX$_{4\_1}$\\[-2pt]\scriptsize $d_7..d_4$ bit 0}{\scriptsize MUX$_{4\_1}$\\[-2pt]\scriptsize $d_3..d_0$ bit 0}{\scriptsize MUX$_{4\_1}$\\[-2pt]\scriptsize $d_7..d_4$ bit 1}{usado}{usado}{usado}
+  \node[etq, left=5mm of al1, align=right] {$s_1, s_0,$\\$d_7..d_4$ (bit 0)};
+  \node[etq, left=5mm of al2, align=right] {$s_1, s_0,$\\$d_3..d_0$ (bit 0)};
+  \node[etq, left=5mm of al3, align=right] {$s_1, s_0,$\\$d_7..d_4$ (bit 1)};
+  \node[etq, left=5mm of al4, align=right] {$s_1, s_0,$\\$d_3..d_0$ (bit 1)};
+  \node[above, font=\small] at (asa) {$s_2$};
+  \node[above, font=\small] at (asb) {$s_2$};
+  \node[right, font=\small] at (aoa) {$y_0$};
+  \node[right, font=\small] at (aob) {$y_1$};
+\end{tikzpicture}

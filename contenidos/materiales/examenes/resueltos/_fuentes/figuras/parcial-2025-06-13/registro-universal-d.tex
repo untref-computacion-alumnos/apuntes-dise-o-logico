@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+  \foreach \i/\x in {3/0,2/5.6,1/11.2,0/16.8}{
+    \node[muxdemux, muxdemux def={Lh=4.0, Rh=2.0, w=1.3, NL=4, NB=2, NR=1}, fill=white] (m\i) at (\x,0) {};
+    \node[flipflop D, add async SR] (f\i) at (\x+2.7,0.0) {};
+    \draw (m\i.rpin 1) -- ++(0.3,0) |- (f\i.pin 1);
+    \pgfmathtruncatemacro{\im}{\i-1}
+    \pgfmathtruncatemacro{\ip}{\i+1}
+    \node[font=\scriptsize, left] at (m\i.lpin 1) {$din_{\i}$};
+    \ifnum\i=0 \node[font=\scriptsize, left, text=critico] at (m\i.lpin 2) {$sin$};
+    \else \node[font=\scriptsize, left] at (m\i.lpin 2) {$Q_{\im}$}; \fi
+    \ifnum\i=3 \node[font=\scriptsize, left, text=critico] at (m\i.lpin 3) {$sin$};
+    \else \node[font=\scriptsize, left] at (m\i.lpin 3) {$Q_{\ip}$}; \fi
+    \node[font=\scriptsize, left] at (m\i.lpin 4) {$Q_{\i}$};
+    \foreach \k/\c in {1/00,2/01,3/10,4/11}{\node[font=\tiny, right] at (m\i.lpin \k) {\c};}
+    \draw (f\i.pin 6) -- ++(0.35,0) -- ++(0,1.0) node[above] {$Q_{\i}$};
+    \draw (m\i.bpin 1) -- ++(0,-0.25); \draw (m\i.bpin 2) -- ++(0,-0.25);
+    \node[font=\scriptsize, below=2mm] at (m\i.south) {$ctrl$};
+    \draw (f\i.pin 3) -- ++(-0.25,0) |- ++(0,-1.1) coordinate (k\i);
+    \draw (f\i.down) -- ++(0,-0.45) coordinate (r\i);
+  }
+  \draw[acento, line width=1pt] (k3) -- (k0) -- ++(0.5,0) node[right, text=tinta] {clk};
+  \draw (r3) -- (r0) -- ++(0.8,0) node[right] {$rst'$};
+  \node[nota, anchor=north west, text width=20cm] at (-1,-2.2) {Cada bit: un $MUX_{4\_1}$ gobernado por $ctrl$ elige qué entra al flip-flop D: $00$ carga $din_i$, $01$ desplaza a izquierda ($Q_{i-1}$, y $sin$ en el bit 0), $10$ desplaza a derecha ($Q_{i+1}$, y $sin$ en el bit 3), $11$ mantiene ($Q_i$). Las salidas $Q_3..Q_0$ forman $dout$.};
+\end{tikzpicture}

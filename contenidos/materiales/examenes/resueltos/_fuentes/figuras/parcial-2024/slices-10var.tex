@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+  \foreach \n/\y in {g/0,h/-1.7,k/-3.4,t/-5.1}{
+    \node[bloque, usado, minimum width=34mm, minimum height=12mm, align=center] (s\n) at (0,\y) {Slice completo\\\scriptsize 4 LUT + 2 F7 + F8 $\Rightarrow$ $\n(x_7..x_0)$};
+    \draw[<-] (s\n.west) -- ++(-0.8,0) node[left, font=\small] {$x_7..x_0$};
+  }
+  \node[bloque, usado, minimum width=22mm, minimum height=40mm, align=center] (lut) at (4.6,-2.55) {LUT-6\\\scriptsize como\\\scriptsize MUX$_{4\_1}$};
+  \foreach \n/\k in {g/3,h/4,k/5,t/6}{
+    \coordinate (p\k) at ($(lut.north west)!{(\k-0.5)/6}!(lut.south west)$);
+    \draw[->] (s\n.east) -- ++(0.6,0) |- (p\k);
+    \node[font=\tiny, right] at (p\k) {$\n$};
+  }
+  \coordinate (p1) at ($(lut.north west)!{0.5/6}!(lut.south west)$);
+  \coordinate (p2) at ($(lut.north west)!{1.5/6}!(lut.south west)$);
+  \draw[<-] (p1) -- ++(-0.35,0) -- ++(0,1.4) node[above, font=\small] {$x_9$};
+  \draw[<-] (p2) -- ++(-1.0,0) -- ++(0,1.9) node[above, font=\small] {$x_8$};
+  \draw[->] (lut.east) -- ++(0.7,0) node[right] {$f$};
+  \node[nota, anchor=north west, text width=12cm] at (-2.6,-6.0) {Slices 1 a 4: una función de 8 variables cada uno (salida del F8). Slice 5: una sola LUT-6 elige con $x_9x_8$ cuál de las cuatro pasa ($00 \to g$, $01 \to h$, $10 \to k$, $11 \to t$).};
+\end{tikzpicture}

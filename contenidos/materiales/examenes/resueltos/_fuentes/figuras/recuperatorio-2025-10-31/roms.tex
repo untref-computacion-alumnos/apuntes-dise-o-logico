@@ -1,0 +1,27 @@
+\begin{tikzpicture}
+  \node[font=\small\bfseries] at (1.3,2.4) {(1) Sumador en ROM $16 \times 8$};
+  \node[bloque, minimum width=24mm, minimum height=34mm] (r1) at (1.3,0) {ROM\\$16\times 8$};
+  \foreach \k/\t in {1/a_1,2/a_0,3/b_1,4/b_0}{
+    \coordinate (i\k) at ($(r1.north west)!{(\k-0.5)/4}!(r1.south west)$);
+    \draw (i\k) -- ++(-0.6,0) node[left] {$\t$};
+    \pgfmathtruncatemacro{\a}{4-\k}
+    \node[right, font=\scriptsize] at (i\k) {$A_{\a}$};
+  }
+  \foreach \k/\t in {1/{D_7..D_3 = 0},2/{D_2 = s_2},3/{D_1 = s_1},4/{D_0 = s_0}}{
+    \coordinate (o\k) at ($(r1.north east)!{(\k-0.5)/4}!(r1.south east)$);
+    \draw (o\k) -- ++(0.6,0) node[right, font=\small] {$\t$};
+  }
+  \begin{scope}[xshift=8.6cm]
+    \node[font=\small\bfseries] at (1.3,2.4) {(3) $DMUX_{4\_2}$ en ROM $32 \times 8$};
+    \node[bloque, minimum width=24mm, minimum height=34mm] (r3) at (1.3,0) {ROM\\$32\times 8$};
+    \foreach \k/\t/\a in {1/0/4,2/{sel_1}/3,3/{sel_0}/2,4/{x_1}/1,5/{x_0}/0}{
+      \coordinate (j\k) at ($(r3.north west)!{(\k-0.5)/5}!(r3.south west)$);
+      \draw (j\k) -- ++(-0.6,0) node[left] {$\t$};
+      \node[right, font=\scriptsize] at (j\k) {$A_{\a}$};
+    }
+    \foreach \k/\t in {1/{D_7D_6 = y_3},2/{D_5D_4 = y_2},3/{D_3D_2 = y_1},4/{D_1D_0 = y_0}}{
+      \coordinate (u\k) at ($(r3.north east)!{(\k-0.5)/4}!(r3.south east)$);
+      \draw[bus] (u\k) -- ++(0.6,0) node[right, font=\small] {$\t$};
+    }
+  \end{scope}
+\end{tikzpicture}

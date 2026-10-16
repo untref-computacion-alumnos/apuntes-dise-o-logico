@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+  \foreach \i/\x in {3/0,2/3.6,1/7.2,0/10.8}{
+    \node[bloque, minimum width=20mm, minimum height=14mm] (fa\i) at (\x,0) {FA$_{\i}$};
+    \draw[<-] ($(fa\i.north)+(-0.4,0)$) -- ++(0,0.6) node[above] {$a_{\i}$};
+    \draw[<-] ($(fa\i.north)+(0.4,0)$) -- ++(0,0.6) node[above] {$b_{\i}$};
+    \draw[->] (fa\i.south) -- ++(0,-0.6) node[below] {$s_{\i}$};
+  }
+  \draw[<-] (fa0.east) -- ++(0.8,0) node[right] {$c_0$};
+  \draw[->, rcritico] (fa0.west) -- node[above, font=\scriptsize, text=critico]{$c_1$: 9} (fa1.east);
+  \draw[->, rcritico] (fa1.west) -- node[above, font=\scriptsize, text=critico]{$c_2$: 14} (fa2.east);
+  \draw[->, rcritico] (fa2.west) -- node[above, font=\scriptsize, text=critico]{$c_3$: 19} (fa3.east);
+  \draw[->, rcritico] (fa3.west) -- ++(-0.9,0) node[left, text=critico] {$c_4$: 24 ns};
+  \node[font=\scriptsize, text=gris] at ($(fa0.south)+(0.7,-0.95)$) {8};
+  \node[font=\scriptsize, text=gris] at ($(fa1.south)+(0.7,-0.95)$) {13};
+  \node[font=\scriptsize, text=gris] at ($(fa2.south)+(0.7,-0.95)$) {18};
+  \node[font=\scriptsize, text=critico] at ($(fa3.south)+(0.7,-0.95)$) {23};
+  \node[nota, anchor=north west, text width=15cm] at (-1.8,-2.2) {Instantes (ns) en que se estabiliza cada señal. Bit 0: $p_0$ a los 4 ($XOR$), $p_0c_0$ a los 6 ($AND$), $c_1$ a los 9 ($OR$). Cada etapa siguiente suma $T_{AND}+T_{OR} = 5$ ns porque su $p_i$ ya está listo desde los 4 ns.};
+\end{tikzpicture}

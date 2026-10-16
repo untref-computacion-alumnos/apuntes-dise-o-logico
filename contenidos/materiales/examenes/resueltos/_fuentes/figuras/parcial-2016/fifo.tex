@@ -1,0 +1,26 @@
+\begin{tikzpicture}
+  \node[bloque, fill=grissuave, minimum width=30mm, minimum height=32mm, align=center] (br) at (5,0) {Banco de\\32 registros\\de 8 b};
+  \node[font=\scriptsize, anchor=north west] at ($(br.north west)+(0.05,-0.05)$) {$w\_addr$};
+  \node[font=\scriptsize, anchor=south west] at ($(br.south west)+(0.05,0.05)$) {$r\_addr$};
+  \node[bloque, minimum width=24mm, align=center] (wp) at (0,1.2) {Contador 5 b\\\scriptsize puntero escritura $wp$};
+  \node[bloque, minimum width=24mm, align=center] (rp) at (0,-1.2) {Contador 5 b\\\scriptsize puntero lectura $rp$};
+  \draw[bus, ->] (wp.east) -- (br.west |- wp.east);
+  \draw[bus, ->] (rp.east) -- (br.west |- rp.east);
+  \draw[bus, ->] (br.north) ++(0,0.9) node[above] {$din$} -- (br.north);
+  \draw[bus, ->] (br.east) -- ++(1.2,0) node[right] {$dout$};
+  \draw[->] ($(br.north east)+(-0.4,0.9)$) node[above, font=\small] {$we$} -- ($(br.north east)+(-0.4,0)$);
+  % habilitaciones
+  \draw[<-] (wp.west) -- ++(-1.2,0) node[left, font=\small] {$inc_w = put \cdot full'$};
+  \draw[<-] (rp.west) -- ++(-1.2,0) node[left, font=\small] {$inc_r = get \cdot empty'$};
+  % comparador y estado
+  \node[bloque, minimum width=20mm] (cmp) at (-0.6,-3.4) {$wp = rp$?\\\scriptsize comparador 5 b};
+  \draw[bus, ->] (2.0,1.2) -- (2.0,-2.4) -| ($(cmp.north)+(0.6,0)$); \fill (2.0,1.2) circle (2pt);
+  \draw[bus, ->] ($(rp.south)+(-0.6,0)$) -- (cmp.north);
+  \node[bloque, minimum width=22mm, align=center] (ff) at (3.6,-3.4) {FF $ult$\\\scriptsize 1 = la última op.\\\scriptsize cambiante fue $put$};
+  \node[bloque, minimum width=26mm, align=center] (lg) at (7.4,-3.4) {$full = eq \cdot ult$\\$empty = eq \cdot ult'$};
+  \draw[<-] (ff.west) -- ++(-0.5,0) node[left, font=\scriptsize] {$put, get$};
+  \draw (cmp.south) -- ++(0,-0.4) -| ($(lg.south)+(-0.5,0)$) node[pos=0.3, below, font=\scriptsize] {$eq$} -- ($(lg.south)+(-0.5,0)$);
+  \draw[->] (ff.east) -- (lg.west);
+  \draw[->] (lg.east) -- ++(0.6,0) node[right, font=\small] {$full$, $empty$};
+  \node[nota, anchor=north west, text width=15cm] at (-3.5,-4.7) {Todos los elementos secuenciales (contadores, banco, FF $ult$) usan el mismo $clk$; $rst$ asincrónico pone $wp = rp = 0$ y $ult = 0$ (fila vacía). $we = inc_w$. $ult^+ = 1$ si hay $put$ sin $get$, $0$ si hay $get$ sin $put$, y mantiene en otro caso.};
+\end{tikzpicture}

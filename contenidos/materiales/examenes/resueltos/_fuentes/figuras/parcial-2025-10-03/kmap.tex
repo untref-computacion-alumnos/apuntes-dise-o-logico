@@ -1,0 +1,25 @@
+\begin{tikzpicture}[scale=1.05]
+  \def\gray{{"00","01","11","10"}}
+  \foreach \r/\rl in {0/00,1/01,2/11,3/10}{\node[font=\small] at (-0.4,-\r-0.5) {\rl};}
+  \foreach \c/\cl in {0/00,1/01,2/11,3/10}{\node[font=\small] at (\c+0.5,0.35) {\cl};}
+  \draw (0,0) grid (4,-4);
+  \draw (0,0) -- (-0.7,0.7);
+  \node[font=\small] at (-0.15,0.55) {$x_1x_0$};
+  \node[font=\small] at (-0.75,0.1) {$x_3x_2$};
+  % valores: fila r, columna c
+  \foreach \r/\c/\v/\m in {0/0/0/0,0/1/1/1,0/2/1/3,0/3/0/2,1/0/0/4,1/1/0/5,1/2/1/7,1/3/0/6,2/0/1/12,2/1/0/13,2/2/0/15,2/3/1/14,3/0/0/8,3/1/1/9,3/2/1/11,3/3/0/10}{
+    \node[font=\large] at (\c+0.5,-\r-0.5) {\v};
+    \node[font=\tiny, text=gris, anchor=north east] at (\c+0.98,-\r-0.03) {\m};
+  }
+  % x2' x0: filas 00 y 10 (se tocan por el borde), columnas 01 y 11
+  \draw[acento, line width=1.4pt, rounded corners=6pt] (1.1,0.12) -- (1.1,-0.88) -- (2.9,-0.88) -- (2.9,0.12);
+  \draw[acento, line width=1.4pt, rounded corners=6pt] (1.1,-4.12) -- (1.1,-3.12) -- (2.9,-3.12) -- (2.9,-4.12);
+  % x3' x1 x0: columna 11, filas 00 y 01
+  \draw[ok, line width=1.4pt, rounded corners=6pt] (2.18,-0.18) rectangle (2.82,-1.82);
+  % x3 x2 x0': fila 11, columnas 00 y 10 (se tocan por el borde)
+  \draw[critico, line width=1.4pt, rounded corners=6pt] (-0.12,-2.1) -- (0.88,-2.1) -- (0.88,-2.9) -- (-0.12,-2.9);
+  \draw[critico, line width=1.4pt, rounded corners=6pt] (4.12,-2.1) -- (3.12,-2.1) -- (3.12,-2.9) -- (4.12,-2.9);
+  \node[anchor=west, text=acento] at (4.8,-0.8) {$x_2'\,x_0$ \small(1, 3, 9, 11)};
+  \node[anchor=west, text=ok] at (4.8,-1.6) {$x_3'\,x_1\,x_0$ \small(3, 7)};
+  \node[anchor=west, text=critico] at (4.8,-2.4) {$x_3\,x_2\,x_0'$ \small(12, 14)};
+\end{tikzpicture}

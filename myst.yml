@@ -1,0 +1,95 @@
+# Ver documentación en: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  title: Apuntes de Diseño Lógico
+  description: Apuntes de Diseño Lógico de la carrera Ingeniería en Computación (UNTREF)
+  keywords:
+    - untref
+    - ingeniería en computación
+    - diseño lógico
+  authors:
+    - name:
+        literal: Autor
+      github: trigologiaa
+  # github: untref-computacion-alumnos/repositorio-apunte
+  bibliography:
+    - references.bib
+  toc:
+    - file: contenidos/introduccion.md
+    - title: Apuntes
+      children:
+        - file: contenidos/apuntes/01-introduccion-a-los-sistemas-digitales.md
+        - file: contenidos/apuntes/02-repaso-de-sistemas-numericos.md
+        - file: contenidos/apuntes/03-representacion-de-numeros-enteros-fraccionarios-y-negativos.md
+        - file: contenidos/apuntes/04-funciones-logicas.md
+        - file: contenidos/apuntes/05-compuertas-logicas.md
+        - file: contenidos/apuntes/06-funciones-de-boole.md
+        - file: contenidos/apuntes/07-formas-canonicas.md
+        - file: contenidos/apuntes/08-redundancias.md
+        - file: contenidos/apuntes/09-circuitos-logicos-combinacionales.md
+        - file: contenidos/apuntes/10-implementacion.md
+        - file: contenidos/apuntes/11-codigos-binarios.md
+        - file: contenidos/apuntes/12-codigos-numericos.md
+        - file: contenidos/apuntes/13-codigos-alfanumericos.md
+        - file: contenidos/apuntes/14-codificadores-y-decodificadores.md
+        - file: contenidos/apuntes/15-multiplexores-y-demultiplexores.md
+        - file: contenidos/apuntes/16-sumadores-restadores-y-comparadores.md
+        - file: contenidos/apuntes/17-circuitos-secuenciales-asincronicos-y-sincronicos.md
+        - file: contenidos/apuntes/18-conversion-ad-da.md
+        - file: contenidos/apuntes/19-circuitos-contadores.md
+        - file: contenidos/apuntes/20-registros.md
+        - file: contenidos/apuntes/21-memoria.md
+        - file: contenidos/apuntes/22-lenguajes-de-programacion-hdl.md
+        - file: contenidos/apuntes/23-logica-programable.md
+    - title: Materiales
+      children:
+        - title: Ejercicios
+          children:
+            - file: contenidos/materiales/ejercicios/archivo-1.md
+            - file: contenidos/materiales/ejercicios/archivo-2.md
+        - title: Trabajos Prácticos
+          children:
+            - file: contenidos/materiales/trabajos-practicos/trabajo-practico-01.md
+            - file: contenidos/materiales/trabajos-practicos/trabajo-practico-02.md
+            - file: contenidos/materiales/trabajos-practicos/trabajo-practico-03.md
+        - title: Exámenes
+          children:
+            - file: contenidos/materiales/examenes/parcial-2016.md
+            - file: contenidos/materiales/examenes/parcial-2017.md
+            - file: contenidos/materiales/examenes/parcial-2022.md
+            - file: contenidos/materiales/examenes/parcial-2024.md
+            - file: contenidos/materiales/examenes/parcial-2025.md
+            - file: contenidos/materiales/examenes/parcial-2025-06-13.md
+            - file: contenidos/materiales/examenes/parcial-2025-10-03.md
+            - file: contenidos/materiales/examenes/recuperatorio-2025.md
+            - file: contenidos/materiales/examenes/recuperatorio-2025-10-31.md
+            - file: contenidos/materiales/examenes/final-2026-02-20.md
+site:
+  template: book-theme
+  title: Apuntes de Diseño Lógico
+  options:
+    hide_toc: false
+    hide_footer_links: false
+    hide_outline: false
+    hide_title_block: false
+    hide_authors: false
+    hide_search: false
+    # outline_maxdepth: number
+    twitter: untref
+    favicon: imagenes/sitio/favicon.ico
+    logo_dark: imagenes/sitio/untref-logo-blanco.svg
+    logo: imagenes/sitio/untref-logo-negro.svg
+    logo_text: Diseño Lógico
+    logo_url: https://www.untref.edu.ar
+    logo_alt: UNTREF - Universidad Nacional de Tres de Febrero
+    # analytics_google: string
+    # analytics_plausible: string
+    # numbered_references: boolean
+    folders: false
+    # internal_domains: string
+    # style: file
+  # nav: []
+  # actions:
+  #   - title: Learn More
+  #     url: https://mystmd.org/guide
+  # domains: []

@@ -1,0 +1,31 @@
+\begin{tikzpicture}
+  % decodificador de escritura
+  \node[bloque, minimum width=18mm, minimum height=52mm, align=center] (dm) at (0,0) {DMUX$_{8\_1}$\\\scriptsize (decodif.\\\scriptsize escritura)};
+  \draw[<-] (dm.west) -- ++(-0.8,0) node[left] {$we$};
+  \draw[<-] (dm.south) -- ++(0,-0.6) node[below] {$w\_addr$ (3 b)};
+  \foreach \i/\y in {0/2.1,1/1.5,2/0.9,3/0.3,4/-0.3,5/-0.9,6/-1.5,7/-2.1}{
+    \coordinate (we\i) at (dm.east |- 0,\y);
+  }
+  % registros
+  \foreach \i/\y in {0/2.2,1/0.7,7/-2.2}{
+    \node[bloque, fill=grissuave, minimum width=26mm, minimum height=11mm, align=center] (r\i) at (4.2,\y) {Reg$_{\i}$ (8 b)\\\scriptsize MUX$_{2\_8}$ + 8 FF-D};
+  }
+  \node at (4.2,-0.75) {$\vdots$};
+  \draw[->] (we0) -- (we0 -| r0.west) node[pos=0.5, above, font=\scriptsize] {$we_0$};
+  \draw[->] (we1) -- ++(0.7,0) |- (r1.west) node[pos=0.75, above, font=\scriptsize] {$we_1$};
+  \draw[->] (we7) -- (we7 -| r7.west) node[pos=0.5, below, font=\scriptsize] {$we_7$};
+  % dato de entrada a todos
+  \draw[bus] (r0.north) ++(-0.6,0) coordinate (din0) -- ++(0,0.7) coordinate (dtop);
+  \draw[bus, ->] (dtop) -- (din0);
+  \draw[bus] (dtop) -- ++(-3.3,0) node[left] {$d\_in$ (8 b)};
+  \node[font=\scriptsize, text=gris, anchor=west] at ($(dtop)+(0.2,0)$) {a todos los registros};
+  % MUX de lectura
+  \node[muxdemux, muxdemux def={Lh=5.2, Rh=2.6, w=1.4, NL=8, NB=1, NR=1}, fill=white] (m) at (8.4,0) {};
+  \draw[bus, ->] (r0.east) -- ++(0.9,0) |- (m.lpin 1);
+  \draw[bus, ->] (r1.east) -- ++(0.6,0) |- (m.lpin 2);
+  \draw[bus, ->] (r7.east) -- ++(0.9,0) |- (m.lpin 8);
+  \draw[<-] (m.bpin 1) -- ++(0,-0.6) node[below] {$r\_addr$ (3 b)};
+  \node[font=\scriptsize, above] at (m.north) {MUX$_{8\_8}$};
+  \draw[bus, ->] (m.rpin 1) -- ++(1,0) node[right] {$d\_out$};
+  \draw (r7.south) ++(0,-0.6) node[below] {clk, rst} -- (r7.south);
+\end{tikzpicture}

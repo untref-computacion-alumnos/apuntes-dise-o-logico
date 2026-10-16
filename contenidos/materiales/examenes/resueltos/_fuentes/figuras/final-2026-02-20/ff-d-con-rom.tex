@@ -1,0 +1,37 @@
+\begin{tikzpicture}
+  \tikzset{rom/.style={bloque, minimum width=22mm, minimum height=28mm}}
+  \node[rom] (m) at (0,0) {};
+  \node[font=\small\bfseries, anchor=north] at (m.north) {ROM 1};
+  \node[font=\scriptsize, anchor=south] at (m.south) {$8\times4$ (maestro)};
+  \node[rom] (e) at (6,0) {};
+  \node[font=\small\bfseries, anchor=north] at (e.north) {ROM 2};
+  \node[font=\scriptsize, anchor=south] at (e.south) {$8\times4$ (esclavo)};
+  % direcciones ROM 1: A2 = clk, A1 = D, A0 = Qm
+  \foreach \k/\t in {1/{A_2},2/{A_1},3/{A_0}}{
+    \coordinate (mi\k) at ($(m.north west)!{\k/4}!(m.south west)$);
+    \node[right, font=\scriptsize] at (mi\k) {$\t$};
+    \coordinate (ei\k) at ($(e.north west)!{\k/4}!(e.south west)$);
+    \node[right, font=\scriptsize] at (ei\k) {$\t$};
+  }
+  \coordinate (mo) at ($(m.north east)!0.5!(m.south east)$);
+  \node[left, font=\scriptsize] at (mo) {$D_0$};
+  \coordinate (eo) at ($(e.north east)!0.5!(e.south east)$);
+  \node[left, font=\scriptsize] at (eo) {$D_0$};
+  \coordinate (eo1) at ($(e.north east)!0.75!(e.south east)$);
+  \node[left, font=\scriptsize] at (eo1) {$D_1$};
+  % reloj
+  \draw (mi1) -- ++(-1.6,0) node[left] (clk) {clk};
+  \draw ($(mi1)+(-1.0,0)$) node[circle, fill, inner sep=1.2pt]{} |- ++(0,2.1) -| ($(ei1)+(-1.4,0)$) -- (ei1);
+  \draw (mi2) -- ++(-1.6,0) node[left] {$D$};
+  % realimentación maestro
+  \draw[->, acento, line width=1pt] (mo) -- ++(1.2,0) coordinate (qm) |- ($(m.south)+(0,-0.7)$) -| ($(mi3)+(-0.6,0)$) -- (mi3);
+  \node[above, font=\small] at ($(mo)+(0.6,0)$) {$Q_m$};
+  \draw[->] (qm) |- (ei2);
+  \fill (qm) circle (1.4pt);
+  % realimentación esclavo
+  \draw[->, acento, line width=1pt] (eo) -- ++(1.2,0) coordinate (qs) |- ($(e.south)+(0,-0.7)$) -| ($(ei3)+(-0.6,0)$) -- (ei3);
+  \fill (qs) circle (1.4pt);
+  \draw (qs) -- ++(0.8,0) node[right] {$Q$};
+  \draw (eo1) -- ++(2.0,0) node[right] {$Q'$};
+  \node[nota, anchor=north west, text width=12cm] at (-2.6,-2.6) {Cada ROM implementa un \emph{latch D} con la realimentación de su propia salida a la dirección $A_0$. ROM 1 es transparente con clk $=0$ y ROM 2 con clk $=1$: el conjunto captura $D$ en el flanco ascendente (maestro--esclavo).};
+\end{tikzpicture}

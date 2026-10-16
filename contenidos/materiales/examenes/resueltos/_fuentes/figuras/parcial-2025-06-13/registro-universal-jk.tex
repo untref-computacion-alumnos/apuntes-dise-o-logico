@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+  \node[muxdemux, muxdemux def={Lh=4.0, Rh=2.0, w=1.3, NL=4, NB=2, NR=1}, fill=white] (m) at (0,0) {};
+  \foreach \k/\t in {1/{din_i},2/{Q_{i-1}\ (sin)},3/{Q_{i+1}\ (sin)},4/{Q_i}}{\node[font=\scriptsize, left] at (m.lpin \k) {$\t$};}
+  \foreach \k/\c in {1/00,2/01,3/10,4/11}{\node[font=\tiny, right] at (m.lpin \k) {\c};}
+  \draw (m.bpin 1) -- ++(0,-0.25); \draw (m.bpin 2) -- ++(0,-0.25);
+  \node[font=\scriptsize, below=2mm] at (m.south) {$ctrl$};
+  \node[flipflop JK] (f) at (3.6,0) {};
+  \draw (m.rpin 1) -- ++(0.5,0) coordinate (n) |- (f.pin 1);
+  \node[font=\scriptsize, above] at ($(m.rpin 1)+(0.25,0)$) {$m_i$};
+  \fill (n) circle (1.3pt);
+  \draw (n) |- (f.pin 3) node[pos=0.75, not port, scale=0.5] (inv) {};
+  \draw (f.pin 2) -- ++(-0.4,0) node[left, font=\scriptsize] {clk};
+  \draw (f.pin 6) -- ++(0.6,0) node[right] {$Q_i$};
+  \node[nota, anchor=west] at (5.2,-1.2) {$J_i = m_i$,\ \ $K_i = m_i'$:\\el JK se comporta como D};
+\end{tikzpicture}
